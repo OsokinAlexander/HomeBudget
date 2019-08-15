@@ -3,6 +3,7 @@ package ru.osokin.budget;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import ru.osokin.budget.entity.Currency;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;

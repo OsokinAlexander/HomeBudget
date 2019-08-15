@@ -8,10 +8,10 @@ import java.math.BigInteger;
 import java.time.LocalDate;
 
 import static junit.framework.TestCase.assertEquals;
+import static ru.osokin.budget.entity.Currency.RUB;
+import static ru.osokin.budget.entity.Currency.USD;
 
 public class OperationManagerTest {
-    private static final Currency RUB = new Currency(BigInteger.valueOf(1), "RUB", "Russian ruble");
-    private static final Currency USD = new Currency(BigInteger.valueOf(2), "USD", "USA dollar");
     private MoneyAccount aliceAccount;
     private MoneyAccount bobAccount;
     private MoneyAccount chrisAccount;
