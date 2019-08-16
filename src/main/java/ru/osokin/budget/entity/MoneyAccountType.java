@@ -1,47 +1,59 @@
 package ru.osokin.budget.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/** Типы денежных "счетов" или категорий долгов и имущества. */
 @Getter
+@AllArgsConstructor
 public enum MoneyAccountType {
 
-    /** Прочие активы. */
-    Assert(MoneyAccountTypeGroup.Asset, 1),
-    /** Дача денег в долг человеку (часто безнадёжно). */
-    AssertToPerson(MoneyAccountTypeGroup.Asset, 2),
-    /** Наличные. */
-    Cash(MoneyAccountTypeGroup.Asset, 3),
-    /** Вклад. */
-    BankDeposit(MoneyAccountTypeGroup.Asset, 4),
+    /** Прочие деньги. */
+    Money(0, "Деньги", MoneyAccountTypeGroup.Money, null),
+    /** Наличные (кошелёк, копилка и пр.). */
+    Cash(1, "Наличные", MoneyAccountTypeGroup.Money, Money),
+    /** Вклад или расчётный счёт. */
+    BankDeposit(2, "Вклад или расчётный счёт", MoneyAccountTypeGroup.Money, Money),
     /** Дебетовая (например, зарплатная) карта. */
-    DebitCard(MoneyAccountTypeGroup.Asset, 5),
+    DebitCard(3, "Дебетовая карта", MoneyAccountTypeGroup.Money, Money),
+    /** Электронный кошелёк. */
+    ElectronicPurse(4, "Электронный кошелёк", MoneyAccountTypeGroup.Money, Money),
+
+    /** Прочее имущество. */
+    Property(100, "Имущество", MoneyAccountTypeGroup.Property, null),
     /** Движимое имущество. */
-    MovableProperty(MoneyAccountTypeGroup.Asset, 6),
+    MovableProperty(101, "Движимое имущество", MoneyAccountTypeGroup.Property, Property),
     /** Недвижимое имущество. */
-    ImmovableProperty(MoneyAccountTypeGroup.Asset, 7),
+    ImmovableProperty(102, "Недвижимое имущество", MoneyAccountTypeGroup.Property, Property),
 
-    /** Прочие пассивы. */
-    Liability(MoneyAccountTypeGroup.Liability, 100),
+    /** Прочие долги. */
+    Creditors(200, "Долги", MoneyAccountTypeGroup.Creditors, null),
     /** Долг перед человеком (отдавать в первую очередь). */
-    LiabilityToPerson(MoneyAccountTypeGroup.Liability, 101),
+    PersonCreditor(201, "Долги людям", MoneyAccountTypeGroup.Creditors, Creditors),
     /** Кредитная карта (деньги принадлежат банку). */
-    CreditCard(MoneyAccountTypeGroup.Liability,102),
+    CreditCard(202, "Кредитная карта", MoneyAccountTypeGroup.Creditors, Creditors),
     /** Ипотека. */
-    Mortgage(MoneyAccountTypeGroup.Liability, 103);
+    Mortgage(203, "Ипотека", MoneyAccountTypeGroup.Creditors, Creditors),
 
-    private final MoneyAccountTypeGroup group;
+    /** Прочие должники. */
+    Borrowers(300, "Должники", MoneyAccountTypeGroup.Borrowers, null),
+    /** Должник (человек). */
+    PersonBorrower(301, "Должники (люди)", MoneyAccountTypeGroup.Borrowers, Borrowers);
+
     private final int id;
-
-    MoneyAccountType(MoneyAccountTypeGroup group, int id) {
-        this.group = group;
-        this.id = id;
-    }
+    private final String name;
+    private final MoneyAccountTypeGroup group;
+    private final MoneyAccountType parent;
 
     public enum MoneyAccountTypeGroup {
-        /** Актив. */
-        Asset,
-        /** Пассив. */
-        Liability
+        /** Деньги. */
+        Money,
+        /** Имущество. */
+        Property,
+        /** Долги. */
+        Creditors,
+        /** Должники. */
+        Borrowers,
     }
 
     public static MoneyAccountType getById(Integer id) {
