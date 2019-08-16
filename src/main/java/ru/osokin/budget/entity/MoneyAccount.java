@@ -26,11 +26,11 @@ public class MoneyAccount {
     @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MoneyAccount_gen")
-    @SequenceGenerator(name="MoneyAccount_gen", sequenceName = "MoneyAccount_seq")
+    @SequenceGenerator(name="MoneyAccount_gen", sequenceName = "MoneyAccount_seq", allocationSize = 1)
     @Column(name = "ID", updatable = false, nullable = false)
     private BigInteger id;
 
-    @Column
+    @Column(name = "account_name")
     @Getter
     @Setter
     private String name;
