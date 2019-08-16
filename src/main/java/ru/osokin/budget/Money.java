@@ -2,6 +2,7 @@ package ru.osokin.budget;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import ru.osokin.budget.entity.Currency;
 
 import java.math.BigDecimal;
 
@@ -32,6 +33,10 @@ public class Money {
     public Money(BigDecimal value, Currency currency) {
         this.value = getNumber(value);
         this.currency = currency;
+    }
+
+    public BigDecimal getValue() {
+        return value;
     }
 
     public Money negate() {
