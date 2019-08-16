@@ -2,7 +2,10 @@ package ru.osokin.budget.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import ru.osokin.budget.Money;
 
 import javax.persistence.Column;
@@ -28,6 +31,11 @@ public class MoneyAccount {
     private BigInteger id;
 
     @Column
+    @Getter
+    @Setter
+    private String name;
+
+    @Column
     private BigDecimal startAmount;
 
     @Column
@@ -38,13 +46,15 @@ public class MoneyAccount {
 
     @Getter
     @Column
+    @CreationTimestamp
     private LocalDateTime created;
 
     @Getter
     @Column
+    @UpdateTimestamp
     private LocalDateTime updated;
 
-    @Column(name = "account_type")
+    @Column
     private Integer typeId;
 
     public MoneyAccountType getType() {
