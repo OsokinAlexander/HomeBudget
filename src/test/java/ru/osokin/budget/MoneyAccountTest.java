@@ -11,6 +11,10 @@ import ru.osokin.budget.entity.Currency;
 import ru.osokin.budget.entity.MoneyAccountType;
 import ru.osokin.budget.repository.MoneyAccountRepository;
 import ru.osokin.budget.entity.MoneyAccount;
+import ru.osokin.budget.entity.Partner;
+import ru.osokin.budget.repository.PartnerRepository;
+
+import java.math.BigDecimal;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -23,19 +27,25 @@ public class MoneyAccountTest {
     @Autowired
     private MoneyAccountRepository moneyAccountRepository;
 
+    @Autowired
+    private PartnerRepository partnerRepository;
+
     @Test
     @Commit
     public void createAccount() {
-        MoneyAccount moneyAccount = new MoneyAccount()
-                .setName("Кошелёк")
-                .setType(MoneyAccountType.Cash)
-                .setCurrency(Currency.RUB)
-                .setCurrentAmount(new Money(0, Currency.RUB))
-                .setStartAmount(new Money(0, Currency.RUB));
-        moneyAccount = moneyAccountRepository.saveAndFlush(moneyAccount);
+        MoneyAccount moneyAccount = new MoneyAccount("Кошелёк", MoneyAccountType.Cash, Currency.RUB, BigDecimal.ZERO);
+        moneyAccount = moneyAccountRepository.save(moneyAccount);
         assertNotNull(moneyAccount.getId());
         assertTrue(moneyAccountRepository.findById(moneyAccount.getId()).isPresent());
+    }
 
+    @Test
+    @Commit
+    public void createPartner() {
+        Partner partner = new Partner("Пятёрочка", Currency.RUB);
+        partner = partnerRepository.save(partner);
+        assertNotNull(partner.getId());
+        assertTrue(partnerRepository.findById(partner.getId()).isPresent());
     }
 
 }

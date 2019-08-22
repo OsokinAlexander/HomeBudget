@@ -1,95 +1,65 @@
 package ru.osokin.budget.entity;
 
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import ru.osokin.budget.Money;
+import ru.osokin.budget.BudgetException;
 
-import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.time.LocalDateTime;
 
 @Entity
+@DiscriminatorValue("moneyAccount")
+@ToString
 @Accessors(chain = true)
 @NoArgsConstructor
-public class MoneyAccount {
+public class MoneyAccount extends AbstractMoneyAccount {
 
-    @Getter
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MoneyAccount_gen")
-    @SequenceGenerator(name="MoneyAccount_gen", sequenceName = "MoneyAccount_seq", allocationSize = 1)
-    @Column(name = "ID", updatable = false, nullable = false)
-    private BigInteger id;
-
-    @Column(name = "account_name")
-    @Getter
-    @Setter
-    private String name;
-
-    @Column
-    private BigDecimal startAmount;
-
-    @Column
-    private BigDecimal currentAmount;
-
-    @Column
-    private Integer currencyId;
-
-    @Getter
-    @Column
-    @CreationTimestamp
-    private LocalDateTime created;
-
-    @Getter
-    @Column
-    @UpdateTimestamp
-    private LocalDateTime updated;
-
-    @Column
-    private Integer typeId;
+    public MoneyAccount(String name, MoneyAccountType type, Currency currency, BigDecimal startAmount) {
+        if (type.getGroup() == MoneyAccountType.MoneyAccountTypeGroup.Partners) {
+            throw new BudgetException("MoneyAccount could not be a partner");
+        }
+        this.name = name;
+        this.typeId = type.getId();
+        this.currencyId = currency.getNumber();
+        this.startAmount = startAmount;
+        this.currentAmount = startAmount;
+    }
 
     public MoneyAccountType getType() {
         return MoneyAccountType.getById(currencyId);
     }
 
-    public MoneyAccount setType(MoneyAccountType type) {
-        typeId = type.getId();
-        return this;
-    }
+//    public MoneyAccount setType(MoneyAccountType type) {
+//        typeId = type.getId();
+//        return this;
+//    }
 
     public Currency getCurrency() {
         return Currency.getById(currencyId);
     }
 
-    public MoneyAccount setCurrency(Currency currency) {
-        currencyId = currency.getNumber();
-        return this;
-    }
-
-    public Money getStartAmount() {
-        return new Money(startAmount, getCurrency());
-    }
-
-    public MoneyAccount setStartAmount(Money startAmount) {
-        this.startAmount = startAmount.getValue();
-        return this;
-    }
-
-    public Money getCurrentAmount() {
-        return new Money(currentAmount, getCurrency());
-    }
-
-    public MoneyAccount setCurrentAmount(Money currentAmount) {
-        this.currentAmount = currentAmount.getValue();
-        return this;
-    }
+//    public MoneyAccount setCurrency(Currency currency) {
+//        currencyId = currency.getNumber();
+//        return this;
+//    }
+//
+//    public Money getStartAmount() {
+//        return new Money(startAmount, getCurrency());
+//    }
+//
+//    public MoneyAccount setStartAmount(Money startAmount) {
+//        this.startAmount = startAmount.getValue();
+//        return this;
+//    }
+//
+//    public Money getCurrentAmount() {
+//        return new Money(currentAmount, getCurrency());
+//    }
+//
+//    public MoneyAccount setCurrentAmount(Money currentAmount) {
+//        this.currentAmount = currentAmount.getValue();
+//        return this;
+//    }
 }

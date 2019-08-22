@@ -38,7 +38,10 @@ public enum MoneyAccountType {
     /** Прочие должники. */
     Borrowers(300, "Должники", MoneyAccountTypeGroup.Borrowers, null),
     /** Должник (человек). */
-    PersonBorrower(301, "Должники (люди)", MoneyAccountTypeGroup.Borrowers, Borrowers);
+    PersonBorrower(301, "Должники (люди)", MoneyAccountTypeGroup.Borrowers, Borrowers),
+
+    /** Контрагенты. */
+    Partners(400, "Контрагенты", MoneyAccountTypeGroup.Partners, null);
 
     private final int id;
     private final String name;
@@ -54,6 +57,8 @@ public enum MoneyAccountType {
         Creditors,
         /** Должники. */
         Borrowers,
+        /** Партнёры (контрагенты). */
+        Partners
     }
 
     public static MoneyAccountType getById(Integer id) {

@@ -1,42 +1,26 @@
 package ru.osokin.budget.entity;
 
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 
-import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import java.math.BigInteger;
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
 @Entity
-@Getter
+@DiscriminatorValue("partner")
+@ToString
+@Accessors(chain = true)
 @NoArgsConstructor
-public class Partner {
+public class Partner extends AbstractMoneyAccount {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Partner_gen")
-    @SequenceGenerator(name="Partner_gen", sequenceName = "Partner_seq", allocationSize = 1)
-    @Column(name = "ID", updatable = false, nullable = false)
-    private BigInteger id;
-
-    @Column(name = "partner_name")
-    private String name;
-
-    @Getter
-    @Column
-    @CreationTimestamp
-    private LocalDateTime created;
-
-    @Getter
-    @Column
-    @UpdateTimestamp
-    private LocalDateTime updated;
+    public Partner(String name, Currency currency) {
+        this.name = name;
+        this.typeId = MoneyAccountType.Partners.getId();
+        this.currencyId = currency.getNumber();
+        this.startAmount = BigDecimal.ZERO;
+        this.currentAmount = startAmount;
+    }
     
 }
