@@ -11,6 +11,7 @@ import ru.osokin.budget.entity.Operation;
 import ru.osokin.budget.entity.OperationType;
 import ru.osokin.budget.repository.MoneyAccountRepository;
 import ru.osokin.budget.repository.OperationRepository;
+import ru.osokin.budget.repository.PartnerRepository;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -30,15 +31,20 @@ public class OperationTest {
     @Autowired
     private MoneyAccountRepository moneyAccountRepository;
 
+    @Autowired
+    private PartnerRepository partnerRepository;
+
     @Test
     @Commit
     public void createExpenseOperation() {
-        Operation operation = new Operation()
-                .setOperationDate(LocalDate.now())
-                .setDescription("Продукты")
-                .setType(OperationType.Food)
-                .setSourceMoneyAccount(moneyAccountRepository.findById(BigInteger.valueOf(1)).get())
-                .setSourceAmount(BigDecimal.valueOf(123.45));
+        Operation operation = new Operation(
+                "Продукты",
+                OperationType.Food,
+                LocalDate.now(),
+                moneyAccountRepository.findById(BigInteger.valueOf(1)).get(),
+                partnerRepository.findById(BigInteger.valueOf(2)).get(),
+                BigDecimal.valueOf(123.45)
+        );
         operation = operationRepository.save(operation);
         assertNotNull(operation.getId());
         assertTrue(operationRepository.findById(operation.getId()).isPresent());

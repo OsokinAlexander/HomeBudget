@@ -1,5 +1,6 @@
 package ru.osokin.budget.entity;
 
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -10,7 +11,8 @@ import java.math.BigDecimal;
 
 @Entity
 @DiscriminatorValue("partner")
-@ToString
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @NoArgsConstructor
 public class Partner extends AbstractMoneyAccount {

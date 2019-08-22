@@ -1,5 +1,6 @@
 package ru.osokin.budget.entity;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -22,6 +23,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @ToString
+@EqualsAndHashCode
 @NoArgsConstructor
 @Entity
 @Table(name = "money_account")
@@ -59,5 +61,15 @@ public abstract class AbstractMoneyAccount {
 
     @Column
     protected Integer typeId;
+
+
+
+    public MoneyAccountType getType() {
+        return MoneyAccountType.getById(currencyId);
+    }
+
+    public Currency getCurrency() {
+        return Currency.getById(currencyId);
+    }
 
 }

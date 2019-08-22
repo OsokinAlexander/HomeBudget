@@ -27,7 +27,7 @@ public enum OperationType {
     Houseware(210, "Предметы быта", OperationTypeGroup.Expense),
     PO(211, "Программное обеспечение", OperationTypeGroup.Expense),
     Food(212, "Продукты", OperationTypeGroup.Expense),
-    WORK(213, "Работа, бизнес", OperationTypeGroup.Expense),
+    Work(213, "Работа, бизнес", OperationTypeGroup.Expense),
     Communication(214, "Связь, интернет", OperationTypeGroup.Expense),
     Transport(215, "Транспорт", OperationTypeGroup.Expense),
     Hobby(216, "Хобби", OperationTypeGroup.Expense),

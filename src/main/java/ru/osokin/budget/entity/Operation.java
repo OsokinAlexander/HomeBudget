@@ -1,10 +1,9 @@
 package ru.osokin.budget.entity;
 
-import lombok.AccessLevel;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -24,12 +23,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@ToString
+@EqualsAndHashCode
 @Accessors(chain = true)
 @NoArgsConstructor
 public class Operation {
 
-    @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Operation_gen")
     @SequenceGenerator(name="Operation_gen", sequenceName = "Operation_seq", allocationSize = 1)
@@ -39,17 +39,14 @@ public class Operation {
     @Column
     private String description;
 
-    @Setter(AccessLevel.NONE)
     @Column
     @CreationTimestamp
     private LocalDateTime created;
 
-    @Setter(AccessLevel.NONE)
     @Column
     @UpdateTimestamp
     private LocalDateTime updated;
 
-    @Setter(AccessLevel.NONE)
     @Column
     private Integer typeId;
 
@@ -62,7 +59,7 @@ public class Operation {
 
     @ManyToOne
     @JoinColumn(name = "destination_account_id")
-    private MoneyAccount destinationMoneyAccount;
+    private AbstractMoneyAccount destinationMoneyAccount;
 
     @Column
     private BigDecimal sourceAmount;
@@ -70,17 +67,26 @@ public class Operation {
     @Column
     private BigDecimal exchangeRate;
 
+    public Operation(String description, OperationType type, LocalDate operationDate, MoneyAccount sourceMoneyAccount, AbstractMoneyAccount destinationMoneyAccount, BigDecimal sourceAmount) {
+        this(description, type, operationDate, sourceMoneyAccount, destinationMoneyAccount, sourceAmount, BigDecimal.ONE);
+    }
+
+    public Operation(String description, OperationType type, LocalDate operationDate, MoneyAccount sourceMoneyAccount, AbstractMoneyAccount destinationMoneyAccount, BigDecimal sourceAmount, BigDecimal exchangeRate) {
+        this.description = description;
+        this.typeId = type.getId();
+        this.operationDate = operationDate;
+        this.sourceMoneyAccount = sourceMoneyAccount;
+        this.destinationMoneyAccount = destinationMoneyAccount;
+        this.sourceAmount = sourceAmount;
+        this.exchangeRate = exchangeRate;
+    }
+
     public Money getSourceAmount() {
         return new Money(sourceAmount, sourceMoneyAccount.getCurrency());
     }
 
     public Money getDestinationAmount() {
         return new Money(sourceAmount.multiply(exchangeRate), destinationMoneyAccount.getCurrency());
-    }
-
-    public Operation setType(OperationType type) {
-        this.typeId = type.getId();
-        return this;
     }
 
 }
