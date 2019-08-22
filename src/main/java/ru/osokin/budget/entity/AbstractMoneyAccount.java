@@ -65,7 +65,7 @@ public abstract class AbstractMoneyAccount {
 
 
     public MoneyAccountType getType() {
-        return MoneyAccountType.getById(currencyId);
+        return MoneyAccountType.getById(typeId);
     }
 
     public Currency getCurrency() {

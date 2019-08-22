@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Version;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDate;
@@ -36,6 +37,9 @@ public class Operation {
     @SequenceGenerator(name="Operation_gen", sequenceName = "Operation_seq", allocationSize = 1)
     @Column(name = "ID", updatable = false, nullable = false)
     private BigInteger id;
+
+    @Version
+    private Integer version;
 
     @Column
     private String description;
