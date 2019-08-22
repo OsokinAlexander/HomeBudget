@@ -7,6 +7,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import ru.osokin.budget.BudgetException;
 import ru.osokin.budget.Money;
 
 import javax.persistence.Column;
@@ -55,7 +56,7 @@ public class Operation {
 
     @ManyToOne
     @JoinColumn(name = "source_account_id")
-    private MoneyAccount sourceMoneyAccount;
+    private AbstractMoneyAccount sourceMoneyAccount;
 
     @ManyToOne
     @JoinColumn(name = "destination_account_id")
@@ -67,11 +68,15 @@ public class Operation {
     @Column
     private BigDecimal exchangeRate;
 
-    public Operation(String description, OperationType type, LocalDate operationDate, MoneyAccount sourceMoneyAccount, AbstractMoneyAccount destinationMoneyAccount, BigDecimal sourceAmount) {
+    public Operation(String description, OperationType type, LocalDate operationDate, AbstractMoneyAccount sourceMoneyAccount, AbstractMoneyAccount destinationMoneyAccount, BigDecimal sourceAmount) {
         this(description, type, operationDate, sourceMoneyAccount, destinationMoneyAccount, sourceAmount, BigDecimal.ONE);
     }
 
-    public Operation(String description, OperationType type, LocalDate operationDate, MoneyAccount sourceMoneyAccount, AbstractMoneyAccount destinationMoneyAccount, BigDecimal sourceAmount, BigDecimal exchangeRate) {
+    public Operation(String description, OperationType type, LocalDate operationDate, AbstractMoneyAccount sourceMoneyAccount, AbstractMoneyAccount destinationMoneyAccount, BigDecimal sourceAmount, BigDecimal exchangeRate) {
+        if (sourceMoneyAccount.getType().equals(destinationMoneyAccount.getType())
+                && sourceMoneyAccount.getType().getGroup() == MoneyAccountType.MoneyAccountTypeGroup.Partners) {
+            throw new BudgetException("Operation could not be between partner and partner");
+        }
         this.description = description;
         this.typeId = type.getId();
         this.operationDate = operationDate;
