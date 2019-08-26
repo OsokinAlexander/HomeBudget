@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.osokin.budget.entity.MoneyAccount;
 import ru.osokin.budget.entity.MoneyAccountDTO;
+import ru.osokin.budget.entity.Operation;
 import ru.osokin.budget.repository.MoneyAccountRepository;
+import ru.osokin.budget.repository.OperationRepository;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -29,18 +32,33 @@ public class MoneyAccountController {
     @Autowired
     private MoneyAccountRepository moneyAccountRepository;
 
+    @Autowired
+    private OperationRepository operationRepository;
+
     @GetMapping
-    public List<MoneyAccountDTO> getAccounts() {
-        return moneyAccountRepository.findAll().stream().map(MoneyAccount::getDTO).collect(Collectors.toList());
+    public List<MoneyAccountDTO> getAccounts(@RequestParam(required = false) Boolean archived) {
+        List<MoneyAccount> moneyAccounts;
+        if (archived == null) {
+            moneyAccounts = moneyAccountRepository.findAll();
+        } else {
+            moneyAccounts = moneyAccountRepository.findAllByArchived(archived);
+        }
+        return moneyAccounts.stream().map(MoneyAccount::getDTO).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public MoneyAccountDTO getAccount(@PathVariable(name = "id") BigInteger id) {
-        Optional<MoneyAccount> result = moneyAccountRepository.findById(id);
-        if (result.isPresent()) {
-            return result.get().getDTO();
+    public ResponseEntity<MoneyAccountDTO> getAccount(@PathVariable(name = "id") BigInteger id,
+                                                      @RequestParam(required = false) Boolean archived) {
+        Optional<MoneyAccount> result;
+        if (archived == null) {
+            result = moneyAccountRepository.findById(id);
+        } else {
+            result = moneyAccountRepository.findByIdAndArchived(id, archived);
         }
-        return null;
+        if (result.isPresent()) {
+            return new ResponseEntity(result.get().getDTO(), HttpStatus.OK);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping
@@ -48,7 +66,7 @@ public class MoneyAccountController {
     public ResponseEntity<MoneyAccountDTO> createAccount(
             @Validated(MoneyAccountDTO.New.class) @RequestBody MoneyAccountDTO moneyAccountDTO) {
         MoneyAccount savedMoneyAccount = moneyAccountRepository.save(new MoneyAccount(moneyAccountDTO));
-        return new ResponseEntity(savedMoneyAccount.getDTO(), HttpStatus.OK);
+        return new ResponseEntity(savedMoneyAccount.getDTO(), HttpStatus.CREATED);
     }
 
     @PutMapping
@@ -63,13 +81,27 @@ public class MoneyAccountController {
         return new ResponseEntity(savedMoneyAccount.getDTO(), HttpStatus.OK);
     }
 
+    /**
+     * Удалить счёт, если с ним нет связанных операций, иначе переместить в архив.
+     * @param id - идентификатор счёта
+     * @return статус удаления
+     */
     @DeleteMapping("/{id}")
-    public void deleteAccount(@PathVariable(name = "id") BigInteger id) {
-        Optional<MoneyAccount> result = moneyAccountRepository.findById(id);
-        if (result.isPresent()) {
-            moneyAccountRepository.delete(result.get());
+    public ResponseEntity deleteAccount(@PathVariable(name = "id") BigInteger id) {
+        Optional<MoneyAccount> moneyAccountResult = moneyAccountRepository.findById(id);
+        if (moneyAccountResult.isPresent()) {
+            MoneyAccount moneyAccount = moneyAccountResult.get();
+            Operation operation = operationRepository
+                    .findFirstBySourceMoneyAccountOrDestinationMoneyAccount(moneyAccount, moneyAccount);
+            if (operation == null) {
+                moneyAccountRepository.delete(moneyAccount);
+            } else {
+                moneyAccount.archive();
+                moneyAccountRepository.save(moneyAccount);
+            }
+            return ResponseEntity.ok().build();
         }
-        return;
+        return ResponseEntity.notFound().build();
     }
 
 }

@@ -62,6 +62,8 @@ public abstract class AbstractMoneyAccount {
     @Column
     protected Integer typeId;
 
+    @Column
+    protected Boolean archived = false;
 
 
     public MoneyAccountType getType() {
@@ -70,6 +72,10 @@ public abstract class AbstractMoneyAccount {
 
     public Currency getCurrency() {
         return Currency.getById(currencyId);
+    }
+
+    public void archive() {
+        archived = true;
     }
 
 }
