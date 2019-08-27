@@ -77,7 +77,9 @@ public class MoneyAccountController {
         if (!result.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        MoneyAccount savedMoneyAccount = moneyAccountRepository.save(new MoneyAccount(moneyAccountDTO));
+        MoneyAccount moneyAccount = result.get();
+        moneyAccount.update(moneyAccountDTO, hasOperations(moneyAccount));
+        MoneyAccount savedMoneyAccount = moneyAccountRepository.save(moneyAccount);
         return new ResponseEntity(savedMoneyAccount.getDTO(), HttpStatus.OK);
     }
 
@@ -91,17 +93,21 @@ public class MoneyAccountController {
         Optional<MoneyAccount> moneyAccountResult = moneyAccountRepository.findById(id);
         if (moneyAccountResult.isPresent()) {
             MoneyAccount moneyAccount = moneyAccountResult.get();
-            Operation operation = operationRepository
-                    .findFirstBySourceMoneyAccountOrDestinationMoneyAccount(moneyAccount, moneyAccount);
-            if (operation == null) {
-                moneyAccountRepository.delete(moneyAccount);
-            } else {
+            if (hasOperations(moneyAccount)) {
                 moneyAccount.archive();
                 moneyAccountRepository.save(moneyAccount);
+            } else {
+                moneyAccountRepository.delete(moneyAccount);
             }
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    private boolean hasOperations(MoneyAccount moneyAccount) {
+        Operation operation = operationRepository
+                .findFirstBySourceMoneyAccountOrDestinationMoneyAccount(moneyAccount, moneyAccount);
+        return operation != null;
     }
 
 }

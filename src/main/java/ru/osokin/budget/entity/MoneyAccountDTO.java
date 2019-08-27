@@ -34,6 +34,9 @@ public class MoneyAccountDTO {
     @NotNull(groups = {New.class, Existing.class})
     private Integer typeId;
 
+    @NotNull(groups = {Existing.class})
+    private Boolean archived;
+
     public interface New {}
     public interface Existing {}
 

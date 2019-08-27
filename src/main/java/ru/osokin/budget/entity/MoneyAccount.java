@@ -19,20 +19,22 @@ import java.math.BigDecimal;
 public class MoneyAccount extends AbstractMoneyAccount {
 
     public MoneyAccount(String name, MoneyAccountType type, Currency currency, BigDecimal startAmount) {
-        this(name, getTypeId(type), currency.getNumber(), startAmount);
+        this(name, type, currency, startAmount, startAmount, false);
     }
 
     public MoneyAccount(MoneyAccountDTO dto) {
         this(dto.getName(), MoneyAccountType.getById(dto.getTypeId()),
-                Currency.getById(dto.getCurrencyId()), dto.getStartAmount());
+                Currency.getById(dto.getCurrencyId()), dto.getStartAmount(), dto.getCurrentAmount(), dto.getArchived());
     }
 
-    private MoneyAccount(String name, Integer typeId, Integer currencyId, BigDecimal startAmount) {
+    private MoneyAccount(String name, MoneyAccountType type, Currency currency,
+                         BigDecimal startAmount, BigDecimal currentAmount, Boolean archived) {
         this.name = name;
-        this.typeId = typeId;
-        this.currencyId = currencyId;
+        this.typeId = getTypeId(type);
+        this.currencyId = currency.getNumber();
         this.startAmount = startAmount;
-        this.currentAmount = startAmount;
+        this.currentAmount = currentAmount;
+        this.archived = archived;
     }
 
     public MoneyAccountDTO getDTO() {
@@ -42,7 +44,8 @@ public class MoneyAccount extends AbstractMoneyAccount {
                 .setCurrencyId(currencyId)
                 .setTypeId(typeId)
                 .setStartAmount(startAmount)
-                .setCurrentAmount(currentAmount);
+                .setCurrentAmount(currentAmount)
+                .setArchived(archived);
     }
 
     private static Integer getTypeId(MoneyAccountType type) {
@@ -50,6 +53,17 @@ public class MoneyAccount extends AbstractMoneyAccount {
             throw new BudgetException("MoneyAccount could not be a partner");
         }
         return type.getId();
+    }
+
+    public MoneyAccount update(MoneyAccountDTO dto, boolean hasOperations) {
+        this.name = dto.getName();
+        this.archived = dto.getArchived();
+        if (!hasOperations) {
+            this.currencyId = dto.getCurrencyId();
+            this.startAmount = dto.getStartAmount();
+            this.currentAmount = dto.getCurrentAmount();
+        }
+        return this;
     }
 
 }
