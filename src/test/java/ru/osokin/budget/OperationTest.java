@@ -35,7 +35,7 @@ public class OperationTest {
     private PartnerRepository partnerRepository;
 
     @Test
-    @Commit
+//    @Commit
     public void createExpenseOperation() {
         Operation operation = new Operation(
                 "Продукты",
@@ -48,6 +48,11 @@ public class OperationTest {
         operation = operationRepository.save(operation);
         assertNotNull(operation.getId());
         assertTrue(operationRepository.findById(operation.getId()).isPresent());
+    }
+
+    @Test
+    public void createOperation() {
+
     }
 
 }

@@ -78,4 +78,12 @@ public abstract class AbstractMoneyAccount {
         archived = true;
     }
 
+    public void addAmount(BigDecimal amount) {
+        currentAmount = currentAmount.add(amount);
+    }
+
+    public void deleteAmount(BigDecimal amount) {
+        currentAmount = currentAmount.add(amount.negate());
+    }
+
 }

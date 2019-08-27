@@ -31,7 +31,7 @@ public class MoneyAccountTest {
     private PartnerRepository partnerRepository;
 
     @Test
-    @Commit
+//    @Commit
     public void createAccount() {
         MoneyAccount moneyAccount = new MoneyAccount("Кошелёк", MoneyAccountType.Cash, Currency.RUB, BigDecimal.ZERO);
         moneyAccount = moneyAccountRepository.save(moneyAccount);
@@ -40,7 +40,7 @@ public class MoneyAccountTest {
     }
 
     @Test
-    @Commit
+//    @Commit
     public void createPartner() {
         Partner partner = new Partner("Пятёрочка", Currency.RUB);
         partner = partnerRepository.save(partner);

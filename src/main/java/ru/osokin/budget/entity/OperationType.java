@@ -2,6 +2,7 @@ package ru.osokin.budget.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import ru.osokin.budget.BudgetException;
 
 /** Типы операций. */
 @Getter
@@ -50,7 +51,7 @@ public enum OperationType {
                 return type;
             }
         }
-        return null;
+        throw new BudgetException("Could not find operation type with id: " + id);
     }
 
 }

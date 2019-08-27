@@ -32,7 +32,7 @@ public class Partner extends AbstractMoneyAccount {
         this.id = id;
         this.name = name;
         this.typeId = MoneyAccountType.Partners.getId();
-        this.currencyId = currency.getNumber();
+        this.currencyId = currency.getId();
         this.startAmount = startAmount;
         this.currentAmount = currentAmount;
         this.archived = archived;

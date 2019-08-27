@@ -31,7 +31,7 @@ public class MoneyAccount extends AbstractMoneyAccount {
                          BigDecimal startAmount, BigDecimal currentAmount, Boolean archived) {
         this.name = name;
         this.typeId = getTypeId(type);
-        this.currencyId = currency.getNumber();
+        this.currencyId = currency.getId();
         this.startAmount = startAmount;
         this.currentAmount = currentAmount;
         this.archived = archived;

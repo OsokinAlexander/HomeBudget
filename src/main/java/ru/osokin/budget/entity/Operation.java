@@ -98,4 +98,31 @@ public class Operation {
         return new Money(sourceAmount.multiply(exchangeRate), destinationMoneyAccount.getCurrency());
     }
 
+    public OperationType getType() {
+        return OperationType.getById(typeId);
+    }
+
+    public OperationDTO getDTO() {
+        return new OperationDTO()
+                .setId(id)
+                .setDescription(description)
+                .setTypeId(typeId)
+                .setOperationDate(operationDate)
+                .setSourceMoneyAccountId(sourceMoneyAccount.getId())
+                .setSourceAmount(sourceAmount)
+                .setDestinationMoneyAccountId(destinationMoneyAccount.getId())
+                .setExchangeRate(exchangeRate);
+    }
+
+    public Operation update(Operation newOperaton) {
+        this.description = newOperaton.description;
+        this.typeId = newOperaton.typeId;
+        this.operationDate = newOperaton.operationDate;
+        this.sourceMoneyAccount = newOperaton.sourceMoneyAccount;
+        this.destinationMoneyAccount = newOperaton.destinationMoneyAccount;
+        this.sourceAmount = newOperaton.sourceAmount;
+        this.exchangeRate = newOperaton.exchangeRate;
+        return this;
+    }
+
 }
