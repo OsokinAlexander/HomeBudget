@@ -7,14 +7,15 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.osokin.budget.entity.Currency;
-import ru.osokin.budget.entity.MoneyAccountType;
+import ru.osokin.budget.entity.Operation;
+import ru.osokin.budget.entity.OperationType;
 import ru.osokin.budget.repository.MoneyAccountRepository;
-import ru.osokin.budget.entity.MoneyAccount;
-import ru.osokin.budget.entity.Partner;
+import ru.osokin.budget.repository.OperationRepository;
 import ru.osokin.budget.repository.PartnerRepository;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.time.LocalDate;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -22,7 +23,10 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
-public class MoneyAccountTest {
+public class OperationTest {
+
+    @Autowired
+    private OperationRepository operationRepository;
 
     @Autowired
     private MoneyAccountRepository moneyAccountRepository;
@@ -32,20 +36,23 @@ public class MoneyAccountTest {
 
     @Test
 //    @Commit
-    public void createAccount() {
-        MoneyAccount moneyAccount = new MoneyAccount("Кошелёк", MoneyAccountType.Cash, Currency.RUB, BigDecimal.ZERO);
-        moneyAccount = moneyAccountRepository.save(moneyAccount);
-        assertNotNull(moneyAccount.getId());
-        assertTrue(moneyAccountRepository.findById(moneyAccount.getId()).isPresent());
+    public void createExpenseOperation() {
+        Operation operation = new Operation(
+                "Продукты",
+                OperationType.Food,
+                LocalDate.now(),
+                moneyAccountRepository.findById(BigInteger.valueOf(1)).get(),
+                partnerRepository.findById(BigInteger.valueOf(2)).get(),
+                BigDecimal.valueOf(123.45)
+        );
+        operation = operationRepository.save(operation);
+        assertNotNull(operation.getId());
+        assertTrue(operationRepository.findById(operation.getId()).isPresent());
     }
 
     @Test
-//    @Commit
-    public void createPartner() {
-        Partner partner = new Partner("Пятёрочка", Currency.RUB);
-        partner = partnerRepository.save(partner);
-        assertNotNull(partner.getId());
-        assertTrue(partnerRepository.findById(partner.getId()).isPresent());
+    public void createOperation() {
+
     }
 
 }

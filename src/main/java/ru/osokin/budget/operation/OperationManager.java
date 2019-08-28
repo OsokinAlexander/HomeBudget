@@ -2,6 +2,7 @@ package ru.osokin.budget.operation;
 
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import ru.osokin.budget.entity.OperationTypeGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +22,9 @@ public class OperationManager {
 //    }
 
     public boolean addOperation(Operation operation) {
-        if (operation.getType() == OperationType.TRANSFER) {
+        if (operation.getType() == OperationTypeGroup.Transfer) {
             ((TransferOperation)operation).getSourceAccount().change(operation.getAmount().negate());
-        } else if (operation.getType() == OperationType.EXCHANGE) {
+        } else if (operation.getType() == OperationTypeGroup.Exchange) {
             ((ExchangeOperation)operation).getSourceAccount().change(
                     ((ExchangeOperation) operation).getExchangeAmount().negate());
         }
@@ -42,9 +43,9 @@ public class OperationManager {
 //    }
 
     public boolean deleteOperation(Operation operation) {
-        if (operation.getType() == OperationType.TRANSFER) {
+        if (operation.getType() == OperationTypeGroup.Transfer) {
             ((TransferOperation)operation).getSourceAccount().change(operation.getAmount());
-        } else if (operation.getType() == OperationType.EXCHANGE) {
+        } else if (operation.getType() == OperationTypeGroup.Exchange) {
             ((ExchangeOperation)operation).getSourceAccount().change(
                     ((ExchangeOperation) operation).getExchangeAmount());
         }

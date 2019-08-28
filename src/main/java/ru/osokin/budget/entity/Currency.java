@@ -3,6 +3,7 @@ package ru.osokin.budget.entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
+import ru.osokin.budget.BudgetException;
 
 /** Множество мировых валют.
  * "ОК (МК (ИСО 4217) 003-97) 014-2000. Общероссийский классификатор валют" (утв. Постановлением Госстандарта России
@@ -178,7 +179,7 @@ public enum Currency {
     private String alpha3;
 
     /** 3-х значный цифровой код. */
-    private int number;
+    private int id;
 
     /** Название валюты. */
     private String shortName;
@@ -188,7 +189,7 @@ public enum Currency {
 
     Currency(String alpha3, int id, String shortName) {
         this.alpha3 = alpha3;
-        this.number = id;
+        this.id = id;
         this.shortName = shortName;
         this.isDefault = false;
     }
@@ -203,11 +204,11 @@ public enum Currency {
             return null;
         }
         for (Currency currency: Currency.values()) {
-            if (currency.number == id) {
+            if (currency.id == id) {
                 return currency;
             }
         }
-        return null;
+        throw new BudgetException("Could not find currency with id: " + id);
     }
 
     /**
@@ -224,7 +225,7 @@ public enum Currency {
                 return currency;
             }
         }
-        return null;
+        throw new BudgetException("Could not find currency with alpah3: " + alpha3);
     }
 
     /**
@@ -241,6 +242,6 @@ public enum Currency {
                 return currency;
             }
         }
-        return null;
+        throw new BudgetException("Could not find currency with short name: " + shortName);
     }
 }

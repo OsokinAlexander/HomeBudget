@@ -5,8 +5,8 @@ import lombok.Getter;
 import lombok.ToString;
 import ru.osokin.budget.Money;
 import ru.osokin.budget.MoneyAccount;
+import ru.osokin.budget.entity.OperationTypeGroup;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDate;
 
@@ -18,7 +18,7 @@ public class ExchangeOperation extends TransferOperation {
 
     public ExchangeOperation(BigInteger id, LocalDate date, String description, MoneyAccount sourceAccount,
                              MoneyAccount destinationAccount, double exchangeAmount, double resultAmount) {
-        super(id, date, description, OperationType.EXCHANGE, sourceAccount, destinationAccount, resultAmount);
+        super(id, date, description, OperationTypeGroup.Exchange, sourceAccount, destinationAccount, resultAmount);
         this.exchangeAmount = new Money(exchangeAmount, sourceAccount.getCurrency());
     }
 }
