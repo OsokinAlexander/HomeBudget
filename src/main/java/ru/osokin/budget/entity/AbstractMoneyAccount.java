@@ -37,7 +37,7 @@ public abstract class AbstractMoneyAccount {
     protected BigInteger id;
 
     @Version
-    protected Integer version;
+    protected Long version;
 
     @Column(name = "account_name")
     protected String name;

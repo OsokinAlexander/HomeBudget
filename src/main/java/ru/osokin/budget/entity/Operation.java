@@ -39,7 +39,7 @@ public class Operation {
     private BigInteger id;
 
     @Version
-    private Integer version;
+    private Long version;
 
     @Column
     private String description;
