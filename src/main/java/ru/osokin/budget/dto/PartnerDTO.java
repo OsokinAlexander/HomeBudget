@@ -1,4 +1,4 @@
-package ru.osokin.budget.entity;
+package ru.osokin.budget.dto;
 
 public class PartnerDTO extends MoneyAccountDTO {
 }

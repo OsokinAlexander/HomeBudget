@@ -4,6 +4,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import ru.osokin.budget.Currency;
+import ru.osokin.budget.MoneyAccountType;
+import ru.osokin.budget.dto.PartnerDTO;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;

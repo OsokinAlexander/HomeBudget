@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import ru.osokin.budget.entity.OperationDTO;
+import ru.osokin.budget.dto.OperationDTO;
 import ru.osokin.budget.service.OperationService;
 
 import java.math.BigInteger;

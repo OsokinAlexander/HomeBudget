@@ -8,7 +8,9 @@ import lombok.experimental.Accessors;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import ru.osokin.budget.BudgetException;
-import ru.osokin.budget.Money;
+import ru.osokin.budget.MoneyAccountType;
+import ru.osokin.budget.OperationType;
+import ru.osokin.budget.dto.OperationDTO;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -88,14 +90,6 @@ public class Operation {
         this.destinationMoneyAccount = destinationMoneyAccount;
         this.sourceAmount = sourceAmount;
         this.exchangeRate = exchangeRate;
-    }
-
-    public Money getSourceAmount() {
-        return new Money(sourceAmount, sourceMoneyAccount.getCurrency());
-    }
-
-    public Money getDestinationAmount() {
-        return new Money(sourceAmount.multiply(exchangeRate), destinationMoneyAccount.getCurrency());
     }
 
     public OperationType getType() {

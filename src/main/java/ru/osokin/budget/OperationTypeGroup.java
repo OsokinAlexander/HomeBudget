@@ -1,4 +1,4 @@
-package ru.osokin.budget.entity;
+package ru.osokin.budget;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

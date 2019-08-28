@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.osokin.budget.entity.Operation;
 import ru.osokin.budget.entity.Partner;
-import ru.osokin.budget.entity.PartnerDTO;
+import ru.osokin.budget.dto.PartnerDTO;
 import ru.osokin.budget.repository.PartnerRepository;
 import ru.osokin.budget.repository.OperationRepository;
 

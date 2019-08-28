@@ -8,8 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.osokin.budget.entity.OperationDTO;
-import ru.osokin.budget.entity.OperationType;
+import ru.osokin.budget.dto.OperationDTO;
 import ru.osokin.budget.service.OperationService;
 
 import java.math.BigDecimal;

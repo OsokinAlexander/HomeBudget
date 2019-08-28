@@ -1,9 +1,8 @@
-package ru.osokin.budget.entity;
+package ru.osokin.budget;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
-import ru.osokin.budget.BudgetException;
 
 /** Множество мировых валют.
  * "ОК (МК (ИСО 4217) 003-97) 014-2000. Общероссийский классификатор валют" (утв. Постановлением Госстандарта России

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.osokin.budget.entity.MoneyAccount;
-import ru.osokin.budget.entity.MoneyAccountDTO;
+import ru.osokin.budget.dto.MoneyAccountDTO;
 import ru.osokin.budget.entity.Operation;
 import ru.osokin.budget.repository.MoneyAccountRepository;
 import ru.osokin.budget.repository.OperationRepository;

@@ -1,8 +1,7 @@
-package ru.osokin.budget.entity;
+package ru.osokin.budget;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import ru.osokin.budget.BudgetException;
 
 /** Типы операций. */
 @Getter

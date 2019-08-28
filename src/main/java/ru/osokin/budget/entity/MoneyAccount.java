@@ -5,6 +5,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import ru.osokin.budget.BudgetException;
+import ru.osokin.budget.Currency;
+import ru.osokin.budget.MoneyAccountType;
+import ru.osokin.budget.dto.MoneyAccountDTO;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;

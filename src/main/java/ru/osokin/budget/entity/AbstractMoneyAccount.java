@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import ru.osokin.budget.Currency;
+import ru.osokin.budget.MoneyAccountType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

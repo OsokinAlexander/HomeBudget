@@ -6,8 +6,8 @@ import ru.osokin.budget.BudgetException;
 import ru.osokin.budget.entity.AbstractMoneyAccount;
 import ru.osokin.budget.entity.MoneyAccount;
 import ru.osokin.budget.entity.Operation;
-import ru.osokin.budget.entity.OperationDTO;
-import ru.osokin.budget.entity.OperationType;
+import ru.osokin.budget.dto.OperationDTO;
+import ru.osokin.budget.OperationType;
 import ru.osokin.budget.entity.Partner;
 import ru.osokin.budget.repository.MoneyAccountRepository;
 import ru.osokin.budget.repository.OperationRepository;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static ru.osokin.budget.entity.OperationTypeGroup.Exchange;
+import static ru.osokin.budget.OperationTypeGroup.Exchange;
 
 @Service
 public class OperationService {
@@ -113,7 +113,7 @@ public class OperationService {
     private void changeAmounts(Operation operation, boolean created) {
         AbstractMoneyAccount sourceMoneyAccount = operation.getSourceMoneyAccount();
         AbstractMoneyAccount destinationMoneyAccount = operation.getDestinationMoneyAccount();
-        BigDecimal sourceAmount = operation.getSourceAmount().getValue();
+        BigDecimal sourceAmount = operation.getSourceAmount();
         if (operation.getType().getGroup() != Exchange) {
             if (!sourceMoneyAccount.getCurrencyId().equals(destinationMoneyAccount.getCurrencyId())) {
                 throw new BudgetException("Source and destination money accounts / partners must have equal currencies");
